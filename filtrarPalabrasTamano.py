@@ -2,8 +2,6 @@
 
 import sys, getopt
 
-from datetime import datetime
-
 max = None
 
 file = None
@@ -11,7 +9,7 @@ file = None
 verbouse = False
 
 def mostrarAyuda():
-	textoAyuda = """This script create a new list of words with a specific size from a wodr list in a file.
+	textoAyuda = """This script create a new list of words with a specific size from a word list in a file.
 
 Usage:acortarPalabras.py [OPTIONS]
 
