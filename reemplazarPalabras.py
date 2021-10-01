@@ -9,28 +9,28 @@ ficheroConReemplazo = None
 
 palabraAReemplazar = None
 
+output = None
+
 verbouse = False
 
 def mostrarAyuda():
 	textoAyuda = """This script replaces a word from a wordlist file with each word in another wordlist file 
-[USAGE] reemplazarPalabras.py [OPTIONS]
+[USAGE]: ./reemplazarPalabras.py [OPTIONS]
 
 OPTIONS:
 -f <WORDLIST FILE> ------------ File with the words to replace
 -F <ANOTHER WORDLIST FILE> ---- File with the words will replace the WORD in WORDLIST FILE
 -w <WORD> --------------------- WORD present in WORDLIST FILE that will be replaced by each word in ANOTHER WORDLIST FILE
+-o <OUTPUT> (OPTIONAL) ---------- Path to the output file
 -v <VERBOUSE> (OPTIONAL) ------ Enable verbouse mode
 -h <HELP> (OPTIONAL) ---------- Shows this help message
 """
 
-	print(textoAyuda)
-
+	sys.exit(textoAyuda)
 
 
 def cargarParametros():
-	opt, argvs = getopt.getopt(sys.argv[1:], "f:F:w:vh")
-
-	needHelp = False
+	opt, argvs = getopt.getopt(sys.argv[1:], "f:F:w:o:vh")
 
 	for o, a in opt:
 		if o == "-f":
@@ -45,10 +45,11 @@ def cargarParametros():
 		elif o == "-v":
 			global verbouse
 			verbouse = True
+		elif o == "-o":
+			global output
+			output = a
 		elif o == "-h":
-			needHelp = True
-
-	return needHelp
+			mostrarAyuda()
 
 
 def reemplazar():
@@ -72,17 +73,20 @@ def reemplazar():
 
 	f.close()
 
-	with open("output.txt", 'a') as output:
-		for linea in listaNueva:
-			output.write(linea + "\n")
+	global output
+	if output is None:
+		output = "output.txt"
 
-	print("Saved in output.txt")
+	with open(output, 'a') as out:
+		for linea in listaNueva:
+			out.write(linea + "\n")
+
+	print("Replaced %i lines" % len(listaNueva))
+	print("Saved in %s" % output)
 
 
 try:
-	if cargarParametros():
-		mostrarAyuda()
-	else:
-		reemplazar()
+	cargarParametros()
+	reemplazar()
 except Exception:
 	mostrarAyuda()

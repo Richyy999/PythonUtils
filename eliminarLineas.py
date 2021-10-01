@@ -55,6 +55,7 @@ def cargarParametros():
 
 def eliminarLineas():
 	lineasRestantes = []
+	lineasTotales = 0
 	global file
 	with open(file, 'r') as f:
 		for linea in f.readlines():
@@ -71,6 +72,8 @@ def eliminarLineas():
 			elif word in linea and verbouse:
 				print("Removed: " + linea)
 
+			lineasTotales += 1
+
 	global output
 	if output is None:
 		output = "output.txt"
@@ -79,11 +82,16 @@ def eliminarLineas():
 		for linea in lineasRestantes:
 			out.write(linea + "\n")
 
+	if len(lineasRestantes) > 0:
+		print("Removed %i of %i lines" %((lineasTotales - len(lineasRestantes)), lineasTotales))
+	else:
+		print("Removed 0 of %i" %lineasTotales)
+
 	print("Saved in " + output)
 
 
 try:
 	cargarParametros()
 	eliminarLineas()
-except Exception as e:
+except Exception:
 	mostrarAyuda()
