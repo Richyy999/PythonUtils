@@ -91,6 +91,5 @@ def insertarEnDiccionario():
 try:
 	cargarParametros()
 	insertarEnDiccionario()
-except Exception as e:
-	print(e.message())
+except Exception:
 	mostrarAyuda()
